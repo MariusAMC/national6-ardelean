@@ -37,4 +37,4 @@ setTimeout(function() {
 
 setInterval(function() {
     console.log("ping");
-}, 1000);
+}, 1000); 
