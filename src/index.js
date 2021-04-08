@@ -1,9 +1,8 @@
-console.log("Entry point to webpack");
+import { renderArticles } from "./article";
+import { getApiPostData } from "./utils/api";
 
-import{ addPixel } from "./utils/addUnitsType";
+console.log("JavaScript - AJAX");
 
-const aRandomNumber = Math.floor(Math.random() * 20);
-console.log(aRandomNumber);
-
-const aRandomNumberWithPixel = addPixel(aRandomNumber);
-console.log(aRandomNumberWithPixel);
+document.getElementById("get-data").addEventListener("click", function () {
+  getApiPostData(renderArticles);
+});
