@@ -1,10 +1,7 @@
 import { createUserData, getTodoData, updateUserData } from "./utils/api";
+import { createTodoItemList } from "./components/items";
 
 console.log("To Do App");
-
-const ADD_NEW_USER_URL = "https://simple-json-server-scit.herokuapp.com/todo";
-const UPDATE_TO_USER_URL =
-  "https://simple-json-server-scit.herokuapp.com/todo/mardelean";
 
 const inputTask = document.getElementById("task-name");
 
@@ -16,6 +13,7 @@ getTodoData((json) => {
   if (json.id === "mardelean") {
     todo = json.todo;
     userExist = true;
+    createTodoItemList(json.todo);
   }
 });
 
