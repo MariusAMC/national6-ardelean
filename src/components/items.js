@@ -1,9 +1,11 @@
+import { updateUserData, getTodoData } from "../utils/api";
+
 const TRASH_CAN_URL =
-  "https://www.flaticon.com/svg/vstatic/svg/1345/1345925.svg?token=exp=1618335381~hmac=1a95e4ec6143975804387bd9cdf67e32";
+  "https://www.flaticon.com/svg/vstatic/svg/4312/4312055.svg?token=exp=1618335380~hmac=a2e7222d995719d26a88a683330a4b36";
 
 const itemListContainer = document.getElementById("item-list");
 
-function createTodoItem(name, checked) {
+function createToDoItem(name, checked, todoList) {
   const container = document.createElement("div");
   container.classList.add("todo-item");
   const checkbox = document.createElement("input");
@@ -15,6 +17,30 @@ function createTodoItem(name, checked) {
   remove.src = TRASH_CAN_URL;
   remove.classList.add("remove-button");
 
+  checkbox.addEventListener("click", () => {
+    const newList = todoList.map((element) => {
+      if (element.item === name) {
+        element.checked = checkbox.checked;
+      }
+
+      return element;
+    });
+
+    updateUserData(newList, () => {
+      getTodoData((json) => createToDoItemList(json.todo));
+    });
+  });
+
+  remove.addEventListener("click", () => {
+    const filteredList = todoList.filter((element) => {
+      return element.item !== name;
+    });
+
+    updateUserData(filteredList, () => {
+      getTodoData((json) => createToDoItemList(json.todo));
+    });
+  });
+
   container.appendChild(checkbox);
   container.appendChild(text);
   container.appendChild(remove);
@@ -22,11 +48,15 @@ function createTodoItem(name, checked) {
   return container;
 }
 
-export function createTodoItemList(todoList) {
+export function createToDoItemList(todoList) {
   itemListContainer.innerHTML = "";
 
   for (const itemData of todoList) {
-    const itemHtmlRef = createTodoItem(itemData.item, itemData.checked);
+    const itemHtmlRef = createToDoItem(
+      itemData.item,
+      itemData.checked,
+      todoList
+    );
     itemListContainer.appendChild(itemHtmlRef);
   }
 }

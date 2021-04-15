@@ -1,5 +1,5 @@
-import { createUserData, getTodoData, updateUserData } from "./utils/api";
-import { createTodoItemList } from "./components/items";
+import { updateUserData, createUserData, getTodoData } from "./utils/api";
+import { createToDoItemList } from "./components/items";
 
 console.log("To Do App");
 
@@ -10,10 +10,11 @@ let userExist = false;
 
 getTodoData((json) => {
   console.log(json);
+
   if (json.id === "mardelean") {
     todo = json.todo;
     userExist = true;
-    createTodoItemList(json.todo);
+    createToDoItemList(json.todo);
   }
 });
 
@@ -28,13 +29,27 @@ document.getElementById("add-task-button").addEventListener("click", () => {
         checked: false,
         item: itemValue,
       });
-      updateUserData(todo, () => {});
+      updateUserData(todo, () => {
+        getToDoData((json) => {
+          console.log(json);
+          todo = json.todo;
+          createToDoItemList(todo);
+        });
+      });
     }
   } else {
     // add user to server
     const itemValue = inputTask.value;
     if (itemValue) {
-      createUserData(itemValue, () => {});
+      createUserData(itemValue, () => {
+        getToDoData((json) => {
+          console.log(json);
+          todo = json.todo;
+          createToDoItemList(todo);
+        });
+      });
     }
   }
+
+  inputTask.value = "";
 });
